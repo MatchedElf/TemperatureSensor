@@ -134,6 +134,7 @@
     <ClCompile Include="systemCTest.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Display.hpp" />
     <ClInclude Include="Hello.hpp" />
     <ClInclude Include="Logger.hpp" />
     <ClInclude Include="WirelessTempSensor.hpp" />

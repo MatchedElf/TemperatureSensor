@@ -27,7 +27,7 @@ SC_MODULE(TemperatureSensor) {
 
             temp_out.write(temperature);
             *logger << "Sensor: temperature = " << temperature << "°C" << " @ " << sc_time_stamp() << endl;
-            wait(1, SC_SEC); // Измеряем температуру каждую секунду
+            wait(0.5, SC_SEC); // Измеряем температуру каждую секунду
         }
     }
 
@@ -53,7 +53,7 @@ SC_MODULE(ADC) {
             digital_out.write(digital_value);
             *logger << "ADC: Value = " << digital_value << " (from temp " << temp << "°C)" << " @ " << sc_time_stamp() << endl;
             //wait(SC_ZERO_TIME); // Небольшая задержка для синхронизации
-            wait(0.3, SC_SEC);
+            wait();
         }
     }
 
@@ -66,22 +66,24 @@ SC_MODULE(ADC) {
 // Модуль интерфейса связи
 SC_MODULE(CommunicationInterface) {
     sc_in<int> data_in; // Вход данных от АЦП
+    sc_out<int> data_out; // Выходные данные из периферии
     sc_out<bool> tx_active; // Сигнал передачи данных
     Logger* logger = new Logger("Communication");
 
     void transmit() {
         while (true) {
+            wait();
             int data = data_in.read();
             tx_active.write(true);
             *logger << "Communication Interface: Start of transmit: " << data << " @ " << sc_time_stamp() << endl;
 
             // Имитация времени передачи
-            wait(0.5, SC_SEC);
+            wait(0.1, SC_SEC);
 
             *logger << "Communication Interface: End of transmit: " << data << " @ " << sc_time_stamp() << endl;
+            data_out.write(data);
             tx_active.write(false);
 
-            wait(0.9, SC_SEC); // Общий период передачи - 1 секунда
         }
     }
 
@@ -97,9 +99,11 @@ SC_MODULE(WirelessTempSensor) {
     ADC* adc;
     CommunicationInterface* comm;
 
+
     sc_signal<double> temp_signal;
     sc_signal<int> adc_signal;
     sc_signal<bool> tx_signal;
+    sc_signal<int> adc_signal_out;
 
     SC_CTOR(WirelessTempSensor) {
         sensor = new TemperatureSensor("TempSensor");
@@ -112,6 +116,7 @@ SC_MODULE(WirelessTempSensor) {
         comm = new CommunicationInterface("CommInterface");
         comm->data_in(adc_signal);
         comm->tx_active(tx_signal);
+        comm->data_out(adc_signal_out);
     }
 
     ~WirelessTempSensor() {
