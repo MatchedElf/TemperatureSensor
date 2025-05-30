@@ -1,0 +1,4 @@
+*.log
+.vs/*
+Debug/*
+systemCTest/Debug/*
