@@ -8,10 +8,10 @@
 #include "Logger.hpp"
 using namespace std;
 
-// Модуль датчика температуры
+// РњРѕРґСѓР»СЊ РґР°С‚С‡РёРєР° С‚РµРјРїРµСЂР°С‚СѓСЂС‹
 
 SC_MODULE(Battery) {
-    sc_out<int> power_out; // Выход температуры в градусах Цельсия
+    sc_out<int> power_out; // Р’С‹С…РѕРґ С‚РµРјРїРµСЂР°С‚СѓСЂС‹ РІ РіСЂР°РґСѓСЃР°С… Р¦РµР»СЊСЃРёСЏ
     Logger* logger = new Logger("Battery");
     //sc_in<bool> clock;
     int power = 100;
@@ -19,12 +19,12 @@ SC_MODULE(Battery) {
 
         while (true) {
             power--;
-            // Ограничиваем диапазон разумными значениями
+            // РћРіСЂР°РЅРёС‡РёРІР°РµРј РґРёР°РїР°Р·РѕРЅ СЂР°Р·СѓРјРЅС‹РјРё Р·РЅР°С‡РµРЅРёСЏРјРё
             if (power <= 0) power = 0;
 
             power_out.write(power);
             *logger << "Battery: power = " << power << "%" << " @ " << sc_time_stamp() << endl;
-            wait(CLOCK_PERIOD * 10, SC_NS);
+            wait(CLOCK_PERIOD * 3, SC_NS);
         }
     }
 

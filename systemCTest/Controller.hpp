@@ -25,9 +25,9 @@ SC_MODULE(Controller) {
             int power = power_in.read();
             int dataTmp = adc_data.read();
             double data = dataTmp * 60.0 / 1023.0 - 10.0;
-            mem_data.write(data);      // Отправка в RF
-            mem_write.write(true);    // Запись в память
-            display_temp.write(data);  // На экран
+            mem_data.write(data);      // РћС‚РїСЂР°РІРєР° РІ RF
+            mem_write.write(true);    // Р—Р°РїРёСЃСЊ РІ РїР°РјСЏС‚СЊ
+            display_temp.write(data);  // РќР° СЌРєСЂР°РЅ
             display_battery.write(power);
             wait(SC_ZERO_TIME);
             mem_write.write(false);

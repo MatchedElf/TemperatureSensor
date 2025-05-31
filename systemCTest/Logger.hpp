@@ -18,11 +18,11 @@ public:
         }
     }
 
-    // Удаляем конструктор копирования и оператор присваивания
+    // РЈРґР°Р»СЏРµРј РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ Рё РѕРїРµСЂР°С‚РѕСЂ РїСЂРёСЃРІР°РёРІР°РЅРёСЏ
     Logger(const Logger&) = delete;
     Logger& operator=(const Logger&) = delete;
 
-    // Разрешаем перемещение
+    // Р Р°Р·СЂРµС€Р°РµРј РїРµСЂРµРјРµС‰РµРЅРёРµ
     Logger(Logger&&) = default;
     Logger& operator=(Logger&&) = default;
 
@@ -33,7 +33,7 @@ public:
         }
     }
 
-    // Шаблонный оператор << для всех типов, кроме манипуляторов 
+    // РЁР°Р±Р»РѕРЅРЅС‹Р№ РѕРїРµСЂР°С‚РѕСЂ << РґР»СЏ РІСЃРµС… С‚РёРїРѕРІ, РєСЂРѕРјРµ РјР°РЅРёРїСѓР»СЏС‚РѕСЂРѕРІ 
     template<typename T>
     Logger& operator<<(const T& value) {
         std::lock_guard<std::mutex> lock(mutex_);
@@ -41,7 +41,7 @@ public:
         return *this;
     }
 
-    // Перегрузка для манипуляторов 
+    // РџРµСЂРµРіСЂСѓР·РєР° РґР»СЏ РјР°РЅРёРїСѓР»СЏС‚РѕСЂРѕРІ 
     Logger& operator<<(std::ostream& (*manip)(std::ostream&)) {
         std::lock_guard<std::mutex> lock(mutex_);
         buffer_ << manip;
