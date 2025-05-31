@@ -5,9 +5,6 @@
 #include <random>
 #include <chrono>
 
-#include "WirelessTempSensor.hpp"
-#include "Logger.hpp"
-#include "Display.hpp"
 #include "System.hpp"
 
 using namespace std;

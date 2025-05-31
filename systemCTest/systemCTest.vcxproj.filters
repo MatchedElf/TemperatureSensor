@@ -29,7 +29,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="WirelessTempSensor.hpp">
+    <ClInclude Include="Sensor.hpp">
       <Filter>Исходные файлы\Periphery</Filter>
     </ClInclude>
     <ClInclude Include="Logger.hpp">
@@ -51,6 +51,9 @@
       <Filter>Исходные файлы\Mother</Filter>
     </ClInclude>
     <ClInclude Include="Communication.hpp">
+      <Filter>Исходные файлы\Periphery</Filter>
+    </ClInclude>
+    <ClInclude Include="ADC.hpp">
       <Filter>Исходные файлы\Periphery</Filter>
     </ClInclude>
   </ItemGroup>

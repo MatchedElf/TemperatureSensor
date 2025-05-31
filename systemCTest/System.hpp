@@ -5,7 +5,8 @@
 #include <random>
 #include <chrono>
 
-#include "WirelessTempSensor.hpp"
+#include "Sensor.hpp"
+#include "ADC.hpp"
 #include "Communication.hpp"
 #include "Logger.hpp"
 #include "Display.hpp"

@@ -8,11 +8,11 @@
 
 using namespace std;
 
-// Модуль интерфейса связи
+// РњРѕРґСѓР»СЊ РёРЅС‚РµСЂС„РµР№СЃР° СЃРІСЏР·Рё
 SC_MODULE(CommunicationInterface) {
-    sc_in<int> data_in; // Вход данных от АЦП
-    sc_out<int> data_out; // Выходные данные из периферии
-    sc_out<bool> tx_active; // Сигнал передачи данных
+    sc_in<int> data_in; // Р’С…РѕРґ РґР°РЅРЅС‹С… РѕС‚ РђР¦Рџ
+    sc_out<int> data_out; // Р’С‹С…РѕРґРЅС‹Рµ РґР°РЅРЅС‹Рµ РёР· РїРµСЂРёС„РµСЂРёРё
+    sc_out<bool> tx_active; // РЎРёРіРЅР°Р» РїРµСЂРµРґР°С‡Рё РґР°РЅРЅС‹С…
 
     Logger* logger = new Logger("Communication");
     
@@ -21,14 +21,14 @@ SC_MODULE(CommunicationInterface) {
 
     void transmit() {
         std::default_random_engine rand_engine;
-        std::bernoulli_distribution error_dist(0.05); // 5% ошибок
+        std::bernoulli_distribution error_dist(0.05); // 5% РѕС€РёР±РѕРє
         while (true) {
             wait();
             int data = data_in.read();
             tx_active.write(true);
             *logger << "Communication Interface: Start of transmit: " << data << " @ " << sc_time_stamp() << endl;
 
-            // Имитация времени передачи
+            // РРјРёС‚Р°С†РёСЏ РІСЂРµРјРµРЅРё РїРµСЂРµРґР°С‡Рё
             wait(CLOCK_PERIOD / 2, SC_NS);
 
             if (!error_dist(rand_engine))
