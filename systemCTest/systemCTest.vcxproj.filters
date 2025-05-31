@@ -19,6 +19,9 @@
     <Filter Include="Исходные файлы\Power">
       <UniqueIdentifier>{4fed3203-a6a4-465a-8417-3501289df1ca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\Mother">
+      <UniqueIdentifier>{5dfb7120-9890-4692-afd0-10a442e1ce23}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="systemCTest.cpp">
@@ -40,6 +43,15 @@
     </ClInclude>
     <ClInclude Include="Battery.hpp">
       <Filter>Исходные файлы\Power</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller.hpp">
+      <Filter>Исходные файлы\Mother</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory.hpp">
+      <Filter>Исходные файлы\Mother</Filter>
+    </ClInclude>
+    <ClInclude Include="Communication.hpp">
+      <Filter>Исходные файлы\Periphery</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
