@@ -5,4 +5,5 @@
 Микроконтроллер - Controller.hpp (2)
 Память - Memory.hpp (2)
 Экран - Display.hpp (1)
+
 ![image](https://github.com/user-attachments/assets/9bb95d7a-5c0d-4592-a25a-6d0d9d3d0b5f)
