@@ -18,13 +18,13 @@ SC_MODULE(Battery) {
     void generate_temp() {
 
         while (true) {
-            wait(CLOCK_PERIOD * 10, SC_NS);
             power--;
             // ќграничиваем диапазон разумными значени€ми
             if (power <= 0) power = 0;
 
             power_out.write(power);
             *logger << "Battery: power = " << power << "%" << " @ " << sc_time_stamp() << endl;
+            wait(CLOCK_PERIOD * 10, SC_NS);
         }
     }
 
