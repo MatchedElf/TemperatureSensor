@@ -9,26 +9,26 @@
 
 using namespace std;
 
-// Модуль датчика температуры
+// РњРѕРґСѓР»СЊ РґР°С‚С‡РёРєР° С‚РµРјРїРµСЂР°С‚СѓСЂС‹
 
 SC_MODULE(TemperatureSensor) {
-    sc_out<double> temp_out; // Выход температуры в градусах Цельсия
+    sc_out<double> temp_out; // Р’С‹С…РѕРґ С‚РµРјРїРµСЂР°С‚СѓСЂС‹ РІ РіСЂР°РґСѓСЃР°С… Р¦РµР»СЊСЃРёСЏ
     Logger* logger = new Logger("Sensor");
     sc_in<bool> clock;
 
     void generate_temp() {
         std::default_random_engine generator;
-        std::normal_distribution<double> distribution(25.0, 5.0); // Средняя температура 25°C, отклонение 5°C
+        std::normal_distribution<double> distribution(25.0, 5.0); // РЎСЂРµРґРЅСЏСЏ С‚РµРјРїРµСЂР°С‚СѓСЂР° 25В°C, РѕС‚РєР»РѕРЅРµРЅРёРµ 5В°C
 
         while (true) {
             wait();
             double temperature = distribution(generator);
-            // Ограничиваем диапазон разумными значениями
+            // РћРіСЂР°РЅРёС‡РёРІР°РµРј РґРёР°РїР°Р·РѕРЅ СЂР°Р·СѓРјРЅС‹РјРё Р·РЅР°С‡РµРЅРёСЏРјРё
             if (temperature < -10.0) temperature = -10.0;
             if (temperature > 50.0) temperature = 50.0;
 
             temp_out.write(temperature);
-            *logger << "Sensor: temperature = " << temperature << "°C" << " @ " << sc_time_stamp() << endl;
+            *logger << "Sensor: temperature = " << temperature << "В°C" << " @ " << sc_time_stamp() << endl;
         }
     }
 
@@ -38,24 +38,24 @@ SC_MODULE(TemperatureSensor) {
     }
 };
 
-// Модуль АЦП (аналого-цифрового преобразователя)
+// РњРѕРґСѓР»СЊ РђР¦Рџ (Р°РЅР°Р»РѕРіРѕ-С†РёС„СЂРѕРІРѕРіРѕ РїСЂРµРѕР±СЂР°Р·РѕРІР°С‚РµР»СЏ)
 SC_MODULE(ADC) {
-    sc_in<double> analog_in;  // Аналоговый вход (температура)
-    sc_out<int> digital_out;  // Цифровой выход (квантованное значение)
+    sc_in<double> analog_in;  // РђРЅР°Р»РѕРіРѕРІС‹Р№ РІС…РѕРґ (С‚РµРјРїРµСЂР°С‚СѓСЂР°)
+    sc_out<int> digital_out;  // Р¦РёС„СЂРѕРІРѕР№ РІС‹С…РѕРґ (РєРІР°РЅС‚РѕРІР°РЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ)
     Logger* logger = new Logger("ADC");
     sc_in<bool> clock;
     
     void convert() {
         while (true) {
             double temp = analog_in.read();
-            // Преобразуем температуру в цифровое значение (0-1023)
+            // РџСЂРµРѕР±СЂР°Р·СѓРµРј С‚РµРјРїРµСЂР°С‚СѓСЂСѓ РІ С†РёС„СЂРѕРІРѕРµ Р·РЅР°С‡РµРЅРёРµ (0-1023)
             int digital_value = static_cast<int>((temp + 10.0) * (1023.0 / 60.0));
             if (digital_value < 0) digital_value = 0;
             if (digital_value > 1023) digital_value = 1023;
 
             digital_out.write(digital_value);
-            *logger << "ADC: Value = " << digital_value << " (from temp " << temp << "°C)" << " @ " << sc_time_stamp() << endl;
-            //wait(SC_ZERO_TIME); // Небольшая задержка для синхронизации
+            *logger << "ADC: Value = " << digital_value << " (from temp " << temp << "В°C)" << " @ " << sc_time_stamp() << endl;
+            //wait(SC_ZERO_TIME); // РќРµР±РѕР»СЊС€Р°СЏ Р·Р°РґРµСЂР¶РєР° РґР»СЏ СЃРёРЅС…СЂРѕРЅРёР·Р°С†РёРё
             wait();
         }
     }
@@ -66,11 +66,11 @@ SC_MODULE(ADC) {
     }
 };
 
-// Модуль интерфейса связи
+// РњРѕРґСѓР»СЊ РёРЅС‚РµСЂС„РµР№СЃР° СЃРІСЏР·Рё
 SC_MODULE(CommunicationInterface) {
-    sc_in<int> data_in; // Вход данных от АЦП
-    sc_out<int> data_out; // Выходные данные из периферии
-    sc_out<bool> tx_active; // Сигнал передачи данных
+    sc_in<int> data_in; // Р’С…РѕРґ РґР°РЅРЅС‹С… РѕС‚ РђР¦Рџ
+    sc_out<int> data_out; // Р’С‹С…РѕРґРЅС‹Рµ РґР°РЅРЅС‹Рµ РёР· РїРµСЂРёС„РµСЂРёРё
+    sc_out<bool> tx_active; // РЎРёРіРЅР°Р» РїРµСЂРµРґР°С‡Рё РґР°РЅРЅС‹С…
     Logger* logger = new Logger("Communication");
     sc_in<bool> clock;
 
@@ -81,7 +81,7 @@ SC_MODULE(CommunicationInterface) {
             tx_active.write(true);
             *logger << "Communication Interface: Start of transmit: " << data << " @ " << sc_time_stamp() << endl;
 
-            // Имитация времени передачи
+            // РРјРёС‚Р°С†РёСЏ РІСЂРµРјРµРЅРё РїРµСЂРµРґР°С‡Рё
             wait(CLOCK_PERIOD / 2, SC_NS);
 
             *logger << "Communication Interface: End of transmit: " << data << " @ " << sc_time_stamp() << endl;
