@@ -134,9 +134,10 @@
     <ClCompile Include="systemCTest.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Battery.hpp" />
     <ClInclude Include="Display.hpp" />
-    <ClInclude Include="Hello.hpp" />
     <ClInclude Include="Logger.hpp" />
+    <ClInclude Include="System.hpp" />
     <ClInclude Include="WirelessTempSensor.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

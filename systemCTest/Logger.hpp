@@ -6,6 +6,8 @@
 #include <mutex> 
 #include <ostream> 
 
+#define CLOCK_PERIOD 10
+
 class Logger {
 public:
     explicit Logger(const std::string& filename) {

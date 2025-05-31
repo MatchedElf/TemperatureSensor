@@ -16,6 +16,9 @@
     <Filter Include="Исходные файлы\Periphery">
       <UniqueIdentifier>{3791d00f-b3f5-42be-8815-5c3a1e3e5f5e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\Power">
+      <UniqueIdentifier>{4fed3203-a6a4-465a-8417-3501289df1ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="systemCTest.cpp">
@@ -23,9 +26,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Hello.hpp">
-      <Filter>Исходные файлы</Filter>
-    </ClInclude>
     <ClInclude Include="WirelessTempSensor.hpp">
       <Filter>Исходные файлы\Periphery</Filter>
     </ClInclude>
@@ -34,6 +34,12 @@
     </ClInclude>
     <ClInclude Include="Display.hpp">
       <Filter>Исходные файлы\Periphery</Filter>
+    </ClInclude>
+    <ClInclude Include="System.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="Battery.hpp">
+      <Filter>Исходные файлы\Power</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

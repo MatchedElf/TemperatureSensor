@@ -14,12 +14,14 @@ using namespace std;
 SC_MODULE(TemperatureSensor) {
     sc_out<double> temp_out; // Выход температуры в градусах Цельсия
     Logger* logger = new Logger("Sensor");
+    sc_in<bool> clock;
 
     void generate_temp() {
         std::default_random_engine generator;
         std::normal_distribution<double> distribution(25.0, 5.0); // Средняя температура 25°C, отклонение 5°C
 
         while (true) {
+            wait();
             double temperature = distribution(generator);
             // Ограничиваем диапазон разумными значениями
             if (temperature < -10.0) temperature = -10.0;
@@ -27,12 +29,12 @@ SC_MODULE(TemperatureSensor) {
 
             temp_out.write(temperature);
             *logger << "Sensor: temperature = " << temperature << "°C" << " @ " << sc_time_stamp() << endl;
-            wait(0.5, SC_SEC); // Измеряем температуру каждую секунду
         }
     }
 
     SC_CTOR(TemperatureSensor) {
         SC_THREAD(generate_temp);
+        sensitive << clock;
     }
 };
 
@@ -41,7 +43,8 @@ SC_MODULE(ADC) {
     sc_in<double> analog_in;  // Аналоговый вход (температура)
     sc_out<int> digital_out;  // Цифровой выход (квантованное значение)
     Logger* logger = new Logger("ADC");
-
+    sc_in<bool> clock;
+    
     void convert() {
         while (true) {
             double temp = analog_in.read();
@@ -69,6 +72,7 @@ SC_MODULE(CommunicationInterface) {
     sc_out<int> data_out; // Выходные данные из периферии
     sc_out<bool> tx_active; // Сигнал передачи данных
     Logger* logger = new Logger("Communication");
+    sc_in<bool> clock;
 
     void transmit() {
         while (true) {
@@ -78,7 +82,7 @@ SC_MODULE(CommunicationInterface) {
             *logger << "Communication Interface: Start of transmit: " << data << " @ " << sc_time_stamp() << endl;
 
             // Имитация времени передачи
-            wait(0.1, SC_SEC);
+            wait(CLOCK_PERIOD / 2, SC_NS);
 
             *logger << "Communication Interface: End of transmit: " << data << " @ " << sc_time_stamp() << endl;
             data_out.write(data);
@@ -90,38 +94,5 @@ SC_MODULE(CommunicationInterface) {
     SC_CTOR(CommunicationInterface) {
         SC_THREAD(transmit);
         sensitive << data_in;
-    }
-};
-
-// Верхний модуль системы
-SC_MODULE(WirelessTempSensor) {
-    TemperatureSensor* sensor;
-    ADC* adc;
-    CommunicationInterface* comm;
-
-
-    sc_signal<double> temp_signal;
-    sc_signal<int> adc_signal;
-    sc_signal<bool> tx_signal;
-    sc_signal<int> adc_signal_out;
-
-    SC_CTOR(WirelessTempSensor) {
-        sensor = new TemperatureSensor("TempSensor");
-        sensor->temp_out(temp_signal);
-
-        adc = new ADC("ADC_Module");
-        adc->analog_in(temp_signal);
-        adc->digital_out(adc_signal);
-
-        comm = new CommunicationInterface("CommInterface");
-        comm->data_in(adc_signal);
-        comm->tx_active(tx_signal);
-        comm->data_out(adc_signal_out);
-    }
-
-    ~WirelessTempSensor() {
-        delete sensor;
-        delete adc;
-        delete comm;
     }
 };
