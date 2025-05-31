@@ -6,6 +6,7 @@
 #include <chrono>
 
 #include "WirelessTempSensor.hpp"
+#include "Communication.hpp"
 #include "Logger.hpp"
 #include "Display.hpp"
 #include "Battery.hpp"
