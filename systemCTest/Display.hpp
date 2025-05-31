@@ -257,6 +257,6 @@ SC_MODULE(Display) {
     SC_CTOR(Display) 
     { 
         SC_THREAD(update); 
-        sensitive << temp_data /*<< battery_level*/; 
+        sensitive << temp_data << battery_level; 
     }
 };

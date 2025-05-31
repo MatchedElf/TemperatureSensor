@@ -9,6 +9,8 @@
 #include "Logger.hpp"
 #include "Display.hpp"
 #include "Battery.hpp"
+#include "Controller.hpp"
+#include "Memory.hpp"
 
 SC_MODULE(SystemTest)
 {
@@ -17,14 +19,20 @@ SC_MODULE(SystemTest)
     CommunicationInterface* comm;
     Display* display; 
     Battery* battery;
+    Controller* control;
+    Memory* memory;
 
     sc_signal<double> temp_signal;
     sc_signal<int> adc_signal;
     sc_signal<bool> tx_signal;
     sc_signal<int> adc_signal_out;
 
-    sc_signal<int> power_signal;
+    sc_signal<int> power_signal_to_control;
+    sc_signal<int> power_signal_from_control;
     sc_signal<int> display_temp_signal;
+
+    sc_signal<int> data_to_memory;
+    sc_signal<bool> write_enable;
 
     sc_signal<bool> clock;
 
@@ -42,7 +50,7 @@ SC_MODULE(SystemTest)
     SC_CTOR(SystemTest)
     {
         battery = new Battery("Battery");
-        battery->power_out(power_signal);
+        battery->power_out(power_signal_to_control);
 
         sensor = new TemperatureSensor("Sensor");
         sensor->temp_out(temp_signal);
@@ -60,10 +68,21 @@ SC_MODULE(SystemTest)
         comm->clock(clock);
 
         display = new Display("Display");
-        display->temp_data(adc_signal_out);
+        display->temp_data(display_temp_signal);
         display->clock(clock);
-        display->battery_level(power_signal);
+        display->battery_level(power_signal_from_control);
 
+        control = new Controller("Controller");
+        control->power_in(power_signal_to_control);
+        control->display_battery(power_signal_from_control);
+        control->adc_data(adc_signal_out);
+        control->display_temp(display_temp_signal);
+        control->mem_data(data_to_memory);
+        control->mem_write(write_enable);
+
+        memory = new Memory("Memory");
+        memory->data_in(data_to_memory);
+        memory->write_enable(write_enable);
         SC_THREAD(clock_gen);
     }
 

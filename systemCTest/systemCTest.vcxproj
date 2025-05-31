@@ -135,8 +135,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Battery.hpp" />
+    <ClInclude Include="Controller.hpp" />
     <ClInclude Include="Display.hpp" />
     <ClInclude Include="Logger.hpp" />
+    <ClInclude Include="Memory.hpp" />
     <ClInclude Include="System.hpp" />
     <ClInclude Include="WirelessTempSensor.hpp" />
   </ItemGroup>
